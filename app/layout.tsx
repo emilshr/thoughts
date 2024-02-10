@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex justify-center`}>
+      <body
+        className={`${inter.className} flex justify-center font-serif text-slate-300`}
+      >
         <NextTopLoader />
         <div className="flex flex-col py-4 w-full min-h-screen sm:max-w-screen-sm px-4 sm:px-0">
           {children}
