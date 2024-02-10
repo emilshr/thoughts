@@ -8,7 +8,6 @@ import bookmarkPlugin from "@notion-render/bookmark-plugin";
 import { Post } from "@/components/post";
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  console.log("Slug: ", params);
   const post = await getPageBySlug(params.slug);
 
   //Redirect to not found page!
@@ -24,14 +23,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
   notionRenderer.use(bookmarkPlugin(undefined));
   const html = await notionRenderer.render(...content);
 
-  console.log("Post: ", post);
-
   return (
     <Post
       title={(post.properties.Title as any).title[0].plain_text}
-      bannerImage={(post.properties.BannerImage as any).url}
-      bannerImageWidth={(post.properties.BannerImageWidth as any).number}
-      bannerImageHeight={(post.properties.BannerImageHeight as any).number}
       content={html}
     />
   );

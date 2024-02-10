@@ -1,30 +1,19 @@
-import Image from "next/image";
-
 interface PostProps {
   title: string;
-  bannerImage: string;
-  bannerImageWidth: number;
-  bannerImageHeight: number;
+  // bannerImage: string;
+  // bannerImageWidth: number;
+  // bannerImageHeight: number;
   content: string;
 }
 
 export function Post(props: PostProps) {
-  const { title, content, bannerImage, bannerImageWidth, bannerImageHeight } =
-    props;
+  const { title, content } = props;
 
   return (
-    <article className="w-full mb-10 flex flex-col items-center pt-20">
-      <h1 className="text-6xl font-black text-white mb-8">{title}</h1>
-      <Image
-        alt="Blog Image"
-        src={bannerImage}
-        // width={bannerImageWidth}
-        width={"800"}
-        height={bannerImageHeight}
-        className="[width: 800px]!"
-      />
+    <article className="w-full flex flex-col">
+      <h1 className="text-2xl font-black text-white mb-8">{title}</h1>
       <div
-        className="text-xl mt-4 max-w-3xl leading-10 prose prose-p:text-white prose-headings:text-white"
+        className="prose prose-p:text-white prose-headings:text-white prose-p:my-0 prose-hr:my-4"
         dangerouslySetInnerHTML={{ __html: content }}
       ></div>
     </article>

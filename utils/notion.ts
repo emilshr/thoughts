@@ -7,6 +7,8 @@ import {
 } from "@notionhq/client/build/src/api-endpoints";
 import { cache } from "react";
 
+const databaseId = process.env.NOTION_DATABASE_ID ?? "DATABASE_ID";
+
 export const notionClient = new Client({
   auth: process.env.NOTION_TOKEN,
 });
@@ -16,29 +18,37 @@ export const getPages = cache(() => {
     filter: {
       property: "Status",
       select: {
-        equals: "Published",
+        equals: "published",
       },
     },
-    database_id: process.env.NOTION_DATABASE_ID!,
+    database_id: databaseId,
   });
 });
 
-export const getPageContent = cache((pageId: string) => {
-  return notionClient.blocks.children
-    .list({ block_id: pageId })
-    .then((res) => res.results as BlockObjectResponse[]);
+export const getPageContent = cache(async (pageId: string) => {
+  const res = await notionClient.blocks.children.list({ block_id: pageId });
+  return res.results as BlockObjectResponse[];
 });
 
-export const getPageBySlug = cache((slug: string) => {
-  return notionClient.databases
-    .query({
-      database_id: process.env.NOTION_DATABASE_ID!,
-      filter: {
-        property: "Slug",
-        rich_text: {
-          equals: slug,
+export const getPageBySlug = cache(async (slug: string) => {
+  const res = await notionClient.databases.query({
+    database_id: process.env.NOTION_DATABASE_ID!,
+    filter: {
+      and: [
+        {
+          property: "Slug",
+          rich_text: {
+            equals: slug,
+          },
         },
-      },
-    })
-    .then((res) => res.results[0] as PageObjectResponse | undefined);
+        {
+          property: "Status",
+          select: {
+            equals: "published",
+          },
+        },
+      ],
+    },
+  });
+  return res.results[0] as PageObjectResponse | undefined;
 });
