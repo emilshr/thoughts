@@ -1,19 +1,5 @@
-import { ResolvingMetadata } from "next";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
-
-type Props = {
-  slug: string;
-};
-
-export async function generateMetaData(
-  { slug }: Props,
-  _parent: ResolvingMetadata
-) {
-  return {
-    title: slug,
-  };
-}
 
 export default function ThoughtLayout({ children }: PropsWithChildren) {
   return (
